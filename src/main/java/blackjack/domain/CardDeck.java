@@ -27,9 +27,15 @@ public class CardDeck {
 
     @Override
     public String toString() {
-        return "CardDeck{" +
-                "cards=" + cards +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("카드 목록 \n");
+
+        for (Card card : cards) {
+            sb.append(card.toString());
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
     public Card draw() {
