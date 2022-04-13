@@ -1,6 +1,7 @@
 package blackjack.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static blackjack.domain.Card.*;
@@ -17,6 +18,11 @@ public class CardDeck {
                 cards.add(card);
             }
         }
+        getShuffle();
+    }
+
+    private void getShuffle() {
+        Collections.shuffle(cards);
     }
 
     @Override
@@ -27,6 +33,8 @@ public class CardDeck {
     }
 
     public Card draw() {
-        return null;
+        Card selectedCard = cards.get(0);
+        cards.remove(selectedCard);
+        return selectedCard;
     }
 }
