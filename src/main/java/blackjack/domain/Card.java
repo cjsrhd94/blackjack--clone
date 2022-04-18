@@ -17,6 +17,14 @@ public class Card {
                 '}';
     }
 
+    public Suit getSuit() {
+        return suit;
+    }
+
+    public Denomination getDenomination() {
+        return denomination;
+    }
+
     public enum Suit {
         SPADE, HEART, DIAMOND, CLUB;
 
@@ -43,6 +51,10 @@ public class Card {
 
         Denomination(int point) {
             this.point = point;
+        }
+
+        public int getPoint() {
+            return this.point;
         }
     }
 }
