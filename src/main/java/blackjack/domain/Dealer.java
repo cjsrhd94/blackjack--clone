@@ -1,14 +1,17 @@
 package blackjack.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Dealer {
     private List<Card> cards;
 
-    public void shuffle(CardDeck cardDeck) {
+    public Dealer() {
+        cards = new ArrayList<>();
     }
 
-    public void draw(CardDeck cardDeck) {
+    public void drawCard(Card card) {
+        this.cards.add(card);
     }
 
     public List<Card> openCards() {
