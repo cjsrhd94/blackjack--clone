@@ -8,4 +8,12 @@ public interface Gamer {
     void showCards();
 
     List<Card> openCards();
+
+    void turnOff();
+
+    void turnOn();
+
+    boolean isTurn();
+
+    String getName();
 }

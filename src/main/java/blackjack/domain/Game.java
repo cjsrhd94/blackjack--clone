@@ -13,15 +13,18 @@ public class Game {
         System.out.println("=====BlackJack=====");
         Scanner sc = new Scanner(System.in);
 
-//        Rule rule = new Rule();
+        Rule rule = new Rule();
         CardDeck cardDeck = new CardDeck();
-        List<Gamer> gamers = Arrays.asList(new Player(), new Dealer());
 
-        initPhase(cardDeck, gamers);
-        playingPhase(sc, cardDeck, gamers);
+        List<Gamer> gamers = Arrays.asList(new Player("사용자1"), new Dealer());
+        List<Gamer> initAfterPlayers = initPhase(cardDeck, gamers);
+        List<Gamer> playingAfterPlayers = playingPhase(sc, cardDeck, initAfterPlayers);
+
+        Gamer winner = rule.getWinner(playingAfterPlayers);
+        System.out.println("승자는 " + winner.getName() + "!");
     }
 
-    private void initPhase(CardDeck cardDeck, List<Gamer> gamers) {
+    private List<Gamer> initPhase(CardDeck cardDeck, List<Gamer> gamers) {
         System.out.println("2장의 카드를 뽑겠습니다.");
         for (int i = 0; i < INIT_DRAW_CARD_COUNT; i++) {
             for (Gamer gamer : gamers) {
@@ -29,32 +32,45 @@ public class Game {
                 gamer.drawCard(card);
             }
         }
+        return gamers;
     }
 
-    private void playingPhase(Scanner sc, CardDeck cardDeck, List<Gamer> gamers) {
-        while (true) {
-            boolean isAllPlayerTurnOff = receiveCardAllPlayers(sc, cardDeck, gamers);
+    private List<Gamer> playingPhase(Scanner sc, CardDeck cardDeck, List<Gamer> gamers) {
+        List<Gamer> cardDrawGamers;
 
-            if (isAllPlayerTurnOff) {
+        while (true) {
+            cardDrawGamers = receiveCardAllPlayers(sc, cardDeck, gamers);
+
+            if (isAllPlayerTurnOff(cardDrawGamers)) {
                 break;
             }
         }
+        return cardDrawGamers;
+    }
+
+    private boolean isAllPlayerTurnOff(List<Gamer> gamers) {
+        for (Gamer gamer : gamers) {
+            if(gamer.isTurn()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
-    private boolean receiveCardAllPlayers(Scanner sc, CardDeck cardDeck, List<Gamer> gamers) {
-        boolean isAllPlayerTurnOff = true;
-
+    private List<Gamer> receiveCardAllPlayers(Scanner sc, CardDeck cardDeck, List<Gamer> gamers) {
         for (Gamer gamer : gamers) {
+            System.out.println(gamer.getName() + "님 차례입니다.");
+
             if (isReceiveCard(sc)) {
                 Card card = cardDeck.draw();
                 gamer.drawCard(card);
-                isAllPlayerTurnOff = false;
+                gamer.turnOn();
             } else {
-                isAllPlayerTurnOff = true;
+                gamer.turnOff();
             }
         }
-        return isAllPlayerTurnOff;
+        return gamers;
     }
 
     private boolean isReceiveCard(Scanner sc) {
